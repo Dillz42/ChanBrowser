@@ -100,6 +100,8 @@ namespace ChanBrowser
                                     (i, b) => new { ChanPanel = i, ChanThread = b }))
                              {
                                  item.ChanPanel.Children.OfType<Image>().First().Source = new BitmapImage(new Uri(item.ChanThread.imageUrlList[0]));
+                                 item.ChanPanel.Children.OfType<Image>().First().MaxHeight = 
+                                    (((Grid)item.ChanPanel.Parent).ActualHeight / ((Grid)item.ChanPanel.Parent).RowDefinitions.Count) * .8;
 
                                  Global.htmlToTextBlockText(item.ChanPanel.Children.OfType<TextBlock>().First(), 
                                      "<strong>" + System.Net.WebUtility.HtmlDecode(item.ChanThread.sub) + "</strong>");
