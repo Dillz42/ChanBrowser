@@ -27,6 +27,7 @@ namespace ChanBrowser
         public MainWindow()
         {
             InitializeComponent();
+            WindowState = WindowState.Maximized;
             KeyDown += (object s, KeyEventArgs e) => 
             {
                 if (e.Key == Key.OemTilde)
