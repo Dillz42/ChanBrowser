@@ -6,7 +6,53 @@
         xmlns:local="clr-namespace:ChanBrowser"
         mc:Ignorable="d"
         Title="MainWindow" Height="350" Width="525">
-    <Grid>
-        
+    <Grid Background="Black" Name="MainGrid">
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="100"/>
+            <ColumnDefinition Width="*"/>
+            <ColumnDefinition Width="*"/>
+            <ColumnDefinition Width="*"/>
+            <ColumnDefinition Width="*"/>
+            <ColumnDefinition Width="*"/>
+        </Grid.ColumnDefinitions>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="*"/>
+            <RowDefinition Height="*"/>
+            <RowDefinition Height="*"/>
+        </Grid.RowDefinitions>
+        <ScrollViewer Grid.RowSpan="3">
+            <StackPanel Name="BoardList" Orientation="Vertical">
+                <Button Click="BoardButton_Click">
+                    ~null~
+                </Button>
+            </StackPanel>
+        </ScrollViewer>
+        <Border BorderBrush="Green" BorderThickness="1" Grid.Column="1" Grid.RowSpan="3"/>
+        <Border BorderBrush="Green" BorderThickness="1" Grid.Column="2" Grid.RowSpan="3"/>
+        <Border BorderBrush="Green" BorderThickness="1" Grid.Column="3" Grid.RowSpan="3"/>
+        <Border BorderBrush="Green" BorderThickness="1" Grid.Column="4" Grid.RowSpan="3"/>
+        <Border BorderBrush="Green" BorderThickness="1" Grid.Column="5" Grid.RowSpan="3"/>
+
+        <Border BorderBrush="Green" BorderThickness="1" Grid.Row="0" Grid.Column="1" Grid.ColumnSpan="5"/>
+        <Border BorderBrush="Green" BorderThickness="1" Grid.Row="1" Grid.Column="1" Grid.ColumnSpan="5"/>
+        <Border BorderBrush="Green" BorderThickness="1" Grid.Row="2" Grid.Column="1" Grid.ColumnSpan="5"/>
+
+        <Image Grid.Column="1" Grid.Row="0" Margin="1"/>
+        <Image Grid.Column="2" Grid.Row="0" Margin="1"/>
+        <Image Grid.Column="3" Grid.Row="0" Margin="1"/>
+        <Image Grid.Column="4" Grid.Row="0" Margin="1"/>
+        <Image Grid.Column="5" Grid.Row="0" Margin="1"/>
+
+        <Image Grid.Column="1" Grid.Row="1" Margin="1"/>
+        <Image Grid.Column="2" Grid.Row="1" Margin="1"/>
+        <Image Grid.Column="3" Grid.Row="1" Margin="1"/>
+        <Image Grid.Column="4" Grid.Row="1" Margin="1"/>
+        <Image Grid.Column="5" Grid.Row="1" Margin="1"/>
+
+        <Image Grid.Column="1" Grid.Row="2" Margin="1"/>
+        <Image Grid.Column="2" Grid.Row="2" Margin="1"/>
+        <Image Grid.Column="3" Grid.Row="2" Margin="1"/>
+        <Image Grid.Column="4" Grid.Row="2" Margin="1"/>
+        <Image Grid.Column="5" Grid.Row="2" Margin="1"/>
     </Grid>
 </Window>

@@ -12,6 +12,7 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
+using ChanBrowserLibrary;
 
 namespace ChanBrowser
 {
@@ -23,6 +24,39 @@ namespace ChanBrowser
         public MainWindow()
         {
             InitializeComponent();
+
+            Task<List<string>> boardListTask = Global.getBoardList();
+            boardListTask.ContinueWith(t =>
+            {
+                switch (t.Status)
+                {
+                    case TaskStatus.RanToCompletion:
+                        foreach (string board in t.Result)
+                        {
+                            Button boardButton = new Button();
+                            boardButton.MinWidth = 100;
+                            boardButton.Margin = new Thickness(1);
+                            boardButton.Content = "/" + board + "/";
+                            boardButton.Click += BoardButton_Click;
+                            BoardList.Children.Add(boardButton);
+                        }
+                        break;
+                    case TaskStatus.Canceled:
+                        MessageBox.Show("getBoardList was canceled!");
+                        break;
+                    case TaskStatus.Faulted:
+                        MessageBox.Show("getBoardList was faulted!");
+                        break;
+                    default:
+                        break;
+                }
+            }, TaskScheduler.FromCurrentSynchronizationContext());
+        }
+
+
+        private async void BoardButton_Click(object sender, RoutedEventArgs e)
+        {
+            MessageBox.Show("Board was clicked!");
         }
     }
 }
