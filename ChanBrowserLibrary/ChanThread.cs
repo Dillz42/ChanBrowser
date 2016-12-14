@@ -48,6 +48,8 @@ namespace ChanBrowserLibrary
         public string tag;
         public string semantic_url;
 
+        public List<string> imageUrlList = new List<string>();
+
         public ChanThread()
         {
 
@@ -92,6 +94,12 @@ namespace ChanBrowserLibrary
             last_modified = (int)(jsonObject["last_modified"] != null ? jsonObject["last_modified"] : 0);
             tag = (string)(jsonObject["tag"] != null ? jsonObject["tag"] : "");
             semantic_url = (string)(jsonObject["semantic_url"] != null ? jsonObject["semantic_url"] : "");
+
+            if (ext != "")
+                imageUrlList.Add(Global.BASE_IMAGE_URL + Global.currentBoard + "/" + tim + "s.jpg");
+            else
+                imageUrlList.Add("http://s.4cdn.org/image/fp/logo-transparent.png");
+
         }
     }
 }

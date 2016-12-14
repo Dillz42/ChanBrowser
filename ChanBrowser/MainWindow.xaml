@@ -37,22 +37,52 @@
         <Border BorderBrush="Green" BorderThickness="1" Grid.Row="1" Grid.Column="1" Grid.ColumnSpan="5"/>
         <Border BorderBrush="Green" BorderThickness="1" Grid.Row="2" Grid.Column="1" Grid.ColumnSpan="5"/>
 
-        <Image Grid.Column="1" Grid.Row="0" Margin="1"/>
-        <Image Grid.Column="2" Grid.Row="0" Margin="1"/>
-        <Image Grid.Column="3" Grid.Row="0" Margin="1"/>
-        <Image Grid.Column="4" Grid.Row="0" Margin="1"/>
-        <Image Grid.Column="5" Grid.Row="0" Margin="1"/>
+        <StackPanel Grid.Column="1" Grid.Row="0" Margin="1">
+            <Image/><TextBlock Foreground="White" TextWrapping="Wrap"/><TextBlock Foreground="White" TextWrapping="Wrap"/>
+        </StackPanel>
+        <StackPanel Grid.Column="2" Grid.Row="0" Margin="1">
+            <Image/><TextBlock Foreground="White" TextWrapping="Wrap"/><TextBlock Foreground="White" TextWrapping="Wrap"/>
+        </StackPanel>
+        <StackPanel Grid.Column="3" Grid.Row="0" Margin="1">
+            <Image/><TextBlock Foreground="White" TextWrapping="Wrap"/><TextBlock Foreground="White" TextWrapping="Wrap"/>
+        </StackPanel>
+        <StackPanel Grid.Column="4" Grid.Row="0" Margin="1">
+            <Image/><TextBlock Foreground="White" TextWrapping="Wrap"/><TextBlock Foreground="White" TextWrapping="Wrap"/>
+        </StackPanel>
+        <StackPanel Grid.Column="5" Grid.Row="0" Margin="1">
+            <Image/><TextBlock Foreground="White" TextWrapping="Wrap"/><TextBlock Foreground="White" TextWrapping="Wrap"/>
+        </StackPanel>
 
-        <Image Grid.Column="1" Grid.Row="1" Margin="1"/>
-        <Image Grid.Column="2" Grid.Row="1" Margin="1"/>
-        <Image Grid.Column="3" Grid.Row="1" Margin="1"/>
-        <Image Grid.Column="4" Grid.Row="1" Margin="1"/>
-        <Image Grid.Column="5" Grid.Row="1" Margin="1"/>
+        <StackPanel Grid.Column="1" Grid.Row="1" Margin="1">
+            <Image/><TextBlock Foreground="White" TextWrapping="Wrap"/><TextBlock Foreground="White" TextWrapping="Wrap"/>
+        </StackPanel>
+        <StackPanel Grid.Column="2" Grid.Row="1" Margin="1">
+            <Image/><TextBlock Foreground="White" TextWrapping="Wrap"/><TextBlock Foreground="White" TextWrapping="Wrap"/>
+        </StackPanel>
+        <StackPanel Grid.Column="3" Grid.Row="1" Margin="1">
+            <Image/><TextBlock Foreground="White" TextWrapping="Wrap"/><TextBlock Foreground="White" TextWrapping="Wrap"/>
+        </StackPanel>
+        <StackPanel Grid.Column="4" Grid.Row="1" Margin="1">
+            <Image/><TextBlock Foreground="White" TextWrapping="Wrap"/><TextBlock Foreground="White" TextWrapping="Wrap"/>
+        </StackPanel>
+        <StackPanel Grid.Column="5" Grid.Row="1" Margin="1">
+            <Image/><TextBlock Foreground="White" TextWrapping="Wrap"/><TextBlock Foreground="White" TextWrapping="Wrap"/>
+        </StackPanel>
 
-        <Image Grid.Column="1" Grid.Row="2" Margin="1"/>
-        <Image Grid.Column="2" Grid.Row="2" Margin="1"/>
-        <Image Grid.Column="3" Grid.Row="2" Margin="1"/>
-        <Image Grid.Column="4" Grid.Row="2" Margin="1"/>
-        <Image Grid.Column="5" Grid.Row="2" Margin="1"/>
+        <StackPanel Grid.Column="1" Grid.Row="2" Margin="1">
+            <Image/><TextBlock Foreground="White" TextWrapping="Wrap"/><TextBlock Foreground="White" TextWrapping="Wrap"/>
+        </StackPanel>
+        <StackPanel Grid.Column="2" Grid.Row="2" Margin="1">
+            <Image/><TextBlock Foreground="White" TextWrapping="Wrap"/><TextBlock Foreground="White" TextWrapping="Wrap"/>
+        </StackPanel>
+        <StackPanel Grid.Column="3" Grid.Row="2" Margin="1">
+            <Image/><TextBlock Foreground="White" TextWrapping="Wrap"/><TextBlock Foreground="White" TextWrapping="Wrap"/>
+        </StackPanel>
+        <StackPanel Grid.Column="4" Grid.Row="2" Margin="1">
+            <Image/><TextBlock Foreground="White" TextWrapping="Wrap"/><TextBlock Foreground="White" TextWrapping="Wrap"/>
+        </StackPanel>
+        <StackPanel Grid.Column="5" Grid.Row="2" Margin="1">
+            <Image/><TextBlock Foreground="White" TextWrapping="Wrap"/><TextBlock Foreground="White" TextWrapping="Wrap"/>
+        </StackPanel>
     </Grid>
 </Window>
