@@ -43,20 +43,24 @@ namespace ChanBrowser
         
         private void loadBoardList()
         {
-            Task<List<string>> boardListTask = Global.getBoardList(tokenSource.Token);
+            Task<List<Tuple<string, string>>> boardListTask = Global.getBoardList(tokenSource.Token);
             boardListTask.ContinueWith(t =>
             {
                 switch (t.Status)
                 {
                     case TaskStatus.RanToCompletion:
-                        foreach (string board in t.Result)
+                        foreach (var board in t.Result)
                         {
                             Button boardButton = new Button();
                             boardButton.MinWidth = 100;
                             boardButton.Margin = new Thickness(1);
-                            boardButton.Content = board;
+                            boardButton.Content = board.Item1;
                             boardButton.Click += BoardButton_Click;
                             BoardList.Children.Add(boardButton);
+
+                            ToolTip toolTip = new ToolTip();
+                            toolTip.Content = board.Item2;
+                            ToolTipService.SetToolTip(boardButton, toolTip);
                         }
                         break;
                     case TaskStatus.Canceled:
@@ -97,9 +101,7 @@ namespace ChanBrowser
                                  item.ChanPanel.Children.OfType<Image>().First().Source = new BitmapImage(new Uri(item.ChanThread.imageUrlList[0]));
 
                                  Global.htmlToTextBlockText(item.ChanPanel.Children.OfType<TextBlock>().First(), 
-                                     "<strong>" + 
-                                     (item.ChanThread.sub != "" ? System.Net.WebUtility.HtmlDecode(item.ChanThread.sub) : "EMPTY SUB")
-                                     + "</strong>");
+                                     "<strong>" + System.Net.WebUtility.HtmlDecode(item.ChanThread.sub) + "</strong>");
                                  Global.htmlToTextBlockText(item.ChanPanel.Children.OfType<TextBlock>().Last(),
                                      (item.ChanThread.com != "" ? System.Net.WebUtility.HtmlDecode(item.ChanThread.com) : "EMPTY COM"));
                              }

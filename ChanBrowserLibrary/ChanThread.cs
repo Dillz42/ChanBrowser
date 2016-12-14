@@ -7,7 +7,7 @@ using Newtonsoft.Json.Linq;
 
 namespace ChanBrowserLibrary
 {
-    public class ChanThread
+    public class ChanPost
     {
         public int no;
         public int resto;
@@ -50,11 +50,11 @@ namespace ChanBrowserLibrary
 
         public List<string> imageUrlList = new List<string>();
 
-        public ChanThread()
+        public ChanPost()
         {
 
         }
-        public ChanThread(JObject jsonObject)
+        public ChanPost(JObject jsonObject)
         {
             no = (int)(jsonObject["no"] != null ? jsonObject["no"] : 0);
             resto = (int)(jsonObject["resto"] != null ? jsonObject["resto"] : 0);

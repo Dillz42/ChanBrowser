@@ -12,12 +12,12 @@ namespace ChanBrowserLibrary
     {
         public const string BASE_URL = "http://a.4cdn.org/";
         public const string BASE_IMAGE_URL = "http://i.4cdn.org/";
-        public static List<ChanThread> chanThreadList = new List<ChanThread>();
+        public static List<ChanPost> chanThreadList = new List<ChanPost>();
         public static string currentBoard;
 
-        public async static Task<List<string>> getBoardList(CancellationToken cancellationToken = new CancellationToken())
+        public async static Task<List<Tuple<string, string>>> getBoardList(CancellationToken cancellationToken = new CancellationToken())
         {
-            List<string> retVal = new List<string>();
+            List<Tuple<string, string>> retVal = new List<Tuple<string, string>>();
 
             JArray boardList = 
                 (JArray)(
@@ -28,7 +28,9 @@ namespace ChanBrowserLibrary
 
             foreach (JObject board in boardList)
             {
-                retVal.Add(board["board"].ToString());
+                retVal.Add(Tuple.Create(
+                    board["board"].ToString(), 
+                    board["title"].ToString() + "\n" + System.Net.WebUtility.HtmlDecode(board["meta_description"].ToString())));
             }
 
             return retVal;
@@ -46,7 +48,7 @@ namespace ChanBrowserLibrary
             {
                 foreach (JObject jsonThread in boardPage["threads"])
                 {
-                    chanThreadList.Add(new ChanThread(jsonThread));
+                    chanThreadList.Add(new ChanPost(jsonThread));
                 }
             }
         }
