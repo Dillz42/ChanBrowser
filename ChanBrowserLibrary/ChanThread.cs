@@ -48,6 +48,7 @@ namespace ChanBrowserLibrary
         public string tag;
         public string semantic_url;
 
+        public string imageUrl = "https://www.google.com/images/branding/googlelogo/2x/googlelogo_color_272x92dp.png";
         public List<string> imageUrlList = new List<string>();
 
         public ChanPost()

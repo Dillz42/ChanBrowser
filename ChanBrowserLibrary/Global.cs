@@ -51,6 +51,8 @@ namespace ChanBrowserLibrary
                     chanThreadList.Add(new ChanPost(jsonThread));
                 }
             }
+
+            chanThreadList.Sort((ChanPost a, ChanPost b) => { return b.last_modified - a.last_modified; });
         }
 
         public static void htmlToTextBlockText(System.Windows.Controls.TextBlock textBlock, string html)

@@ -103,6 +103,8 @@ namespace ChanBrowser
                                  item.ChanPanel.Children.OfType<Image>().First().MaxHeight = 
                                     (((Grid)item.ChanPanel.Parent).ActualHeight / ((Grid)item.ChanPanel.Parent).RowDefinitions.Count) * .8;
 
+                                 item.ChanPanel.DataContext = item.ChanThread;
+
                                  Global.htmlToTextBlockText(item.ChanPanel.Children.OfType<TextBlock>().First(), 
                                      "<strong>" + System.Net.WebUtility.HtmlDecode(item.ChanThread.sub) + "</strong>");
                                  Global.htmlToTextBlockText(item.ChanPanel.Children.OfType<TextBlock>().Last(),
@@ -118,6 +120,22 @@ namespace ChanBrowser
                      }
                  }, TaskScheduler.FromCurrentSynchronizationContext());
             }
+        }
+
+        private void ThreadPanel_MouseUp(object sender, RoutedEventArgs e)
+        {
+            ChanPost chanPost = ((ChanPost)((StackPanel)sender).DataContext);
+            Button threadButton = new Button();
+            threadButton.MinWidth = 100;
+            threadButton.Margin = new Thickness(1);
+            threadButton.Content = chanPost.no.ToString() + "\n" + chanPost.semantic_url;
+            
+            ThreadList.Children.Add(threadButton);
+        }
+        
+        private void ThreadButton_Click(object sender, RoutedEventArgs e)
+        {
+            MessageBox.Show("You clicked a thread!");
         }
     }
 }
