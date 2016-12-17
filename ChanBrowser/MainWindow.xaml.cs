@@ -154,7 +154,9 @@ namespace ChanBrowser
                 threadButton.DataContext = ((FrameworkElement)sender).DataContext;
                 threadButton.Click += ThreadButton_Click;
 
-                ThreadList.Children.Add(threadButton); 
+                ThreadList.Children.Add(threadButton);
+
+                ThreadButton_Click(threadButton, null);
             }
         }
         
@@ -187,12 +189,16 @@ namespace ChanBrowser
                                     image.Margin = new Thickness(2);
                                     postStackPanel.Children.Add(image);
 
-                                    ToolTip imageToolTip = new ToolTip();
-                                    Image imageToolTipImage = new Image();
-                                    imageToolTipImage.Source = new BitmapImage(new Uri(
-                                        Global.BASE_IMAGE_URL + reply.board + "/" + reply.tim + reply.ext));
-                                    imageToolTip.Content = imageToolTipImage;
-                                    ToolTipService.SetToolTip(image, imageToolTip);
+                                    {
+                                        ToolTip imageToolTip = new ToolTip();
+                                        Image toolTipImage = new Image();
+                                        toolTipImage.Source = new BitmapImage(new Uri(
+                                            Global.BASE_IMAGE_URL + reply.board + "/" + reply.tim + reply.ext));
+
+                                        imageToolTip.Content = toolTipImage;
+
+                                        ToolTipService.SetToolTip(image, imageToolTip);
+                                    }
 
                                     StackPanel textStackPanel = new StackPanel();
                                     textStackPanel.Orientation = Orientation.Vertical;
