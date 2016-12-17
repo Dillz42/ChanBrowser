@@ -95,7 +95,7 @@ namespace ChanBrowser
                          case TaskStatus.RanToCompletion:
                              Title = "/" + Global.currentBoard + "/";
 
-                             foreach (var item in MainGrid.Children.OfType<StackPanel>()
+                             foreach (var item in BoardGrid.Children.OfType<StackPanel>()
                                     .Zip(Global.chanThreadList, 
                                     (i, b) => new { ChanPanel = i, ChanThread = b }))
                              {
@@ -157,7 +157,7 @@ namespace ChanBrowser
                     switch (t.Status)
                     {
                         case TaskStatus.RanToCompletion:
-                            foreach (var item in MainGrid.Children.OfType<StackPanel>()
+                            foreach (var item in BoardGrid.Children.OfType<StackPanel>()
                                     .Zip(op.replyList, (i, p) => new { ChanPanel = i, Post = p }))
                             {
                                 item.ChanPanel.Children.OfType<Image>().First().Source = new BitmapImage(new Uri(item.Post.imageUrl));
