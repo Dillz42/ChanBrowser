@@ -174,79 +174,81 @@ namespace ChanBrowser
                         case TaskStatus.RanToCompletion:
                             foreach (ChanPost reply in op.replyList)
                             {
-                                if (reply.ext != "")
-                                {
-                                    StackPanel postStackPanel = new StackPanel();
-                                    postStackPanel.Orientation = Orientation.Horizontal;
-                                    postStackPanel.HorizontalAlignment = HorizontalAlignment.Left;
-                                    postStackPanel.Margin = new Thickness(2);
-                                    postStackPanel.Background = Brushes.MidnightBlue;
+                                StackPanel postStackPanel = new StackPanel();
+                                postStackPanel.Orientation = Orientation.Horizontal;
+                                postStackPanel.HorizontalAlignment = HorizontalAlignment.Left;
+                                postStackPanel.Margin = new Thickness(2);
+                                postStackPanel.Background = Brushes.MidnightBlue;
                                     
-                                    Image image = new Image();
+                                Image image = new Image();
+                                
+                                if(reply.ext != "")
+                                {
                                     image.Source = new BitmapImage(new Uri(reply.imageUrl));
                                     image.Stretch = Stretch.None;
                                     image.VerticalAlignment = VerticalAlignment.Top;
                                     image.Margin = new Thickness(2);
                                     postStackPanel.Children.Add(image);
 
+                                    ToolTip imageToolTip = new ToolTip();
+                                    Image toolTipImage = new Image();
+                                    toolTipImage.DataContext = Global.BASE_IMAGE_URL + reply.board + "/" + reply.tim + reply.ext;
+                                    imageToolTip.Loaded += (ls, le) =>
                                     {
-                                        ToolTip imageToolTip = new ToolTip();
-                                        Image toolTipImage = new Image();
-                                        toolTipImage.Source = new BitmapImage(new Uri(
-                                            Global.BASE_IMAGE_URL + reply.board + "/" + reply.tim + reply.ext));
+                                        toolTipImage.Source = new BitmapImage(new Uri((string)toolTipImage.DataContext));
+                                    };
 
-                                        imageToolTip.Content = toolTipImage;
+                                    imageToolTip.Content = toolTipImage;
 
-                                        ToolTipService.SetToolTip(image, imageToolTip);
-                                    }
-
-                                    StackPanel textStackPanel = new StackPanel();
-                                    textStackPanel.Orientation = Orientation.Vertical;
-                                    textStackPanel.VerticalAlignment = VerticalAlignment.Top;
-
-                                    {
-                                        TextBlock textBlock = new TextBlock();
-                                        Global.htmlToTextBlockText(textBlock,
-                                            (reply.no != 0 ? reply.no + " - " : "") + 
-                                            (reply.name != "" ? reply.name : "Anonymous") + " @ " +
-                                            (reply.now != "" ? reply.now : "UNKNOWN TIME"));
-                                        textBlock.Foreground = Brushes.White;
-                                        textBlock.TextWrapping = TextWrapping.Wrap;
-                                        textBlock.Loaded += (ls, le) =>
-                                        {
-                                            textBlock.Width = ThreadStackPanel.ActualWidth - image.ActualWidth;
-                                        };
-                                        textStackPanel.Children.Add(textBlock);
-                                    }
-
-                                    {
-                                        TextBlock textBlock = new TextBlock();
-                                        Global.htmlToTextBlockText(textBlock, "<strong>" + reply.sub + "</strong>");
-                                        textBlock.Foreground = Brushes.White;
-                                        textBlock.TextWrapping = TextWrapping.Wrap;
-                                        textBlock.Loaded += (ls, le) =>
-                                        {
-                                            textBlock.Width = ThreadStackPanel.ActualWidth - image.ActualWidth;
-                                        };
-                                        textStackPanel.Children.Add(textBlock);
-                                    }
-
-                                    {
-                                        TextBlock textBlock = new TextBlock();
-                                        Global.htmlToTextBlockText(textBlock, reply.com);
-                                        textBlock.Foreground = Brushes.White;
-                                        textBlock.TextWrapping = TextWrapping.Wrap;
-                                        textBlock.Loaded += (ls, le) => 
-                                        {
-                                            textBlock.Width = ThreadStackPanel.ActualWidth - image.ActualWidth;
-                                        };
-                                        textStackPanel.Children.Add(textBlock);
-                                    }
-                                    
-                                    postStackPanel.Children.Add(textStackPanel);
-
-                                    ThreadStackPanel.Children.Add(postStackPanel);
+                                    ToolTipService.SetToolTip(image, imageToolTip);
                                 }
+
+                                StackPanel textStackPanel = new StackPanel();
+                                textStackPanel.Orientation = Orientation.Vertical;
+                                textStackPanel.VerticalAlignment = VerticalAlignment.Top;
+
+                                {
+                                    TextBlock textBlock = new TextBlock();
+                                    Global.htmlToTextBlockText(textBlock,
+                                        (reply.no != 0 ? reply.no + " - " : "") + 
+                                        (reply.name != "" ? reply.name : "Anonymous") + " @ " +
+                                        (reply.now != "" ? reply.now : "UNKNOWN TIME"));
+                                    textBlock.Foreground = Brushes.White;
+                                    textBlock.TextWrapping = TextWrapping.Wrap;
+                                    textBlock.Loaded += (ls, le) =>
+                                    {
+                                        textBlock.Width = ThreadStackPanel.ActualWidth - image.ActualWidth;
+                                    };
+                                    textStackPanel.Children.Add(textBlock);
+                                }
+
+                                {
+                                    TextBlock textBlock = new TextBlock();
+                                    Global.htmlToTextBlockText(textBlock, "<strong>" + reply.sub + "</strong>");
+                                    textBlock.Foreground = Brushes.White;
+                                    textBlock.TextWrapping = TextWrapping.Wrap;
+                                    textBlock.Loaded += (ls, le) =>
+                                    {
+                                        textBlock.Width = ThreadStackPanel.ActualWidth - image.ActualWidth;
+                                    };
+                                    textStackPanel.Children.Add(textBlock);
+                                }
+
+                                {
+                                    TextBlock textBlock = new TextBlock();
+                                    Global.htmlToTextBlockText(textBlock, reply.com);
+                                    textBlock.Foreground = Brushes.White;
+                                    textBlock.TextWrapping = TextWrapping.Wrap;
+                                    textBlock.Loaded += (ls, le) => 
+                                    {
+                                        textBlock.Width = ThreadStackPanel.ActualWidth - image.ActualWidth;
+                                    };
+                                    textStackPanel.Children.Add(textBlock);
+                                }
+                                    
+                                postStackPanel.Children.Add(textStackPanel);
+
+                                ThreadStackPanel.Children.Add(postStackPanel);
                             }
 
 
