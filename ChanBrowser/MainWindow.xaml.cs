@@ -187,6 +187,13 @@ namespace ChanBrowser
                                     image.Margin = new Thickness(2);
                                     postStackPanel.Children.Add(image);
 
+                                    ToolTip imageToolTip = new ToolTip();
+                                    Image imageToolTipImage = new Image();
+                                    imageToolTipImage.Source = new BitmapImage(new Uri(
+                                        Global.BASE_IMAGE_URL + reply.board + "/" + reply.tim + reply.ext));
+                                    imageToolTip.Content = imageToolTipImage;
+                                    ToolTipService.SetToolTip(image, imageToolTip);
+
                                     StackPanel textStackPanel = new StackPanel();
                                     textStackPanel.Orientation = Orientation.Vertical;
                                     textStackPanel.VerticalAlignment = VerticalAlignment.Top;
