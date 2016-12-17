@@ -12,6 +12,7 @@ namespace ChanBrowserLibrary
     {
         public const string BASE_URL = "http://a.4cdn.org/";
         public const string BASE_IMAGE_URL = "http://i.4cdn.org/";
+        public const string DEFAULT_IMAGE = "http://s.4cdn.org/image/fp/logo-transparent.png";
         public static List<ChanPost> chanThreadList = new List<ChanPost>();
         public static string currentBoard;
 
@@ -36,7 +37,7 @@ namespace ChanBrowserLibrary
             return retVal;
         }
 
-        public async static Task loadBoard(string board)
+        public async static Task loadBoard(string board, CancellationToken cancellationToken = new CancellationToken())
         {
             chanThreadList.Clear();
             currentBoard = board;
@@ -48,11 +49,24 @@ namespace ChanBrowserLibrary
             {
                 foreach (JObject jsonThread in boardPage["threads"])
                 {
-                    chanThreadList.Add(new ChanPost(jsonThread));
+                    chanThreadList.Add(new ChanPost(jsonThread, board));
                 }
             }
 
             chanThreadList.Sort((ChanPost a, ChanPost b) => { return b.last_modified - a.last_modified; });
+        }
+
+        public async static Task loadThread(ChanPost op, CancellationToken cancellationToken = new CancellationToken())
+        {
+            string address = BASE_URL + op.board + "/thread/" + op.no + ".json";
+
+            JObject thread = (JObject)await HttpRequest.httpRequestParse(address, JObject.Parse);
+
+            foreach (JObject post in thread["posts"])
+            {
+                op.replyList.Add(new ChanPost(post, op.board));
+            }
+
         }
 
         public static void htmlToTextBlockText(System.Windows.Controls.TextBlock textBlock, string html)

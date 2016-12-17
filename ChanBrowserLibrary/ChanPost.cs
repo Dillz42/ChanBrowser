@@ -9,6 +9,8 @@ namespace ChanBrowserLibrary
 {
     public class ChanPost
     {
+        public string board;
+
         public int no;
         public int resto;
         public int sticky;
@@ -48,15 +50,19 @@ namespace ChanBrowserLibrary
         public string tag;
         public string semantic_url;
 
-        public string imageUrl = "https://www.google.com/images/branding/googlelogo/2x/googlelogo_color_272x92dp.png";
-        public List<string> imageUrlList = new List<string>();
+        public List<ChanPost> replyList = new List<ChanPost>();
+
+        public string imageUrl = Global.DEFAULT_IMAGE;
+        //public List<string> imageUrlList = new List<string>();
 
         public ChanPost()
         {
 
         }
-        public ChanPost(JObject jsonObject)
+        public ChanPost(JObject jsonObject, string board)
         {
+            this.board = board;
+
             no = (int)(jsonObject["no"] != null ? jsonObject["no"] : 0);
             resto = (int)(jsonObject["resto"] != null ? jsonObject["resto"] : 0);
             sticky = (int)(jsonObject["sticky"] != null ? jsonObject["sticky"] : 0);
@@ -97,9 +103,9 @@ namespace ChanBrowserLibrary
             semantic_url = (string)(jsonObject["semantic_url"] != null ? jsonObject["semantic_url"] : "");
 
             if (ext != "")
-                imageUrlList.Add(Global.BASE_IMAGE_URL + Global.currentBoard + "/" + tim + "s.jpg");
-            else
-                imageUrlList.Add("http://s.4cdn.org/image/fp/logo-transparent.png");
+                imageUrl = (Global.BASE_IMAGE_URL + Global.currentBoard + "/" + tim + "s.jpg");
+            //else
+            //    imageUrlList.Add("http://s.4cdn.org/image/fp/logo-transparent.png");
 
         }
     }

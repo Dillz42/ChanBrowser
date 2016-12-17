@@ -47,7 +47,7 @@
     <Reference Include="WindowsBase" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="ChanThread.cs" />
+    <Compile Include="ChanPost.cs" />
     <Compile Include="Global.cs" />
     <Compile Include="HtmlToXamlConverter.cs" />
     <Compile Include="HttpRequest.cs" />
