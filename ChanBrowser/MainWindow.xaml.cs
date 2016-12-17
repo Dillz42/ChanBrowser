@@ -193,8 +193,8 @@ namespace ChanBrowser
 
                                     ToolTip imageToolTip = new ToolTip();
                                     StackPanel toolTipStackPanel = new StackPanel();
-                                    Image toolTipImage = new Image();
                                     TextBlock toolTipTextBlock = new TextBlock();
+                                    Image toolTipImage = new Image();
 
                                     imageToolTip.Background = Brushes.Black;
                                     imageToolTip.Loaded += (ls, le) =>
@@ -206,13 +206,12 @@ namespace ChanBrowser
 
                                     toolTipStackPanel.Orientation = Orientation.Vertical;
                                     
-                                    toolTipTextBlock.Text = reply.filename + reply.ext;
+                                    toolTipTextBlock.Text = reply.w + "x" + reply.h + " - " + reply.filename + reply.ext;
                                     toolTipStackPanel.Children.Add(toolTipTextBlock);
 
                                     toolTipImage.DataContext = Global.BASE_IMAGE_URL + reply.board + "/" + reply.tim + reply.ext;
                                     toolTipStackPanel.Children.Add(toolTipImage);
-
-
+                                    
                                     imageToolTip.Content = toolTipStackPanel;
                                     ToolTipService.SetShowDuration(image, int.MaxValue);
                                     //ToolTipService.SetInitialShowDelay(image, 0);
