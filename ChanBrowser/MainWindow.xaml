@@ -6,7 +6,7 @@
         xmlns:local="clr-namespace:ChanBrowser"
         mc:Ignorable="d"
         Title="MainWindow" Height="498.291" Width="831.689">
-    <Grid Background="DarkBlue" Name="MainGrid">
+    <Grid Background="Black" Name="MainGrid">
         <Grid.ColumnDefinitions>
             <ColumnDefinition Width="100"/>
             <ColumnDefinition Width="*"/>
@@ -124,7 +124,14 @@
                 <TextBlock Foreground="White" TextWrapping="Wrap"/>
             </StackPanel>
         </Grid>
-        <ScrollViewer Grid.Column="4" VerticalScrollBarVisibility="Hidden">
+
+        <ScrollViewer Grid.Column="2">
+            <StackPanel Name="ThreadStackPanel" Orientation="Vertical">
+                
+            </StackPanel>
+        </ScrollViewer>
+        
+        <ScrollViewer Grid.Column="3" VerticalScrollBarVisibility="Hidden">
             <StackPanel Name="ThreadList" Orientation="Vertical">
                 <Button Click="ThreadButton_Click">
                     ~null~
