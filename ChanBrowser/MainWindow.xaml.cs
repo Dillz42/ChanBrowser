@@ -192,15 +192,31 @@ namespace ChanBrowser
                                     postStackPanel.Children.Add(image);
 
                                     ToolTip imageToolTip = new ToolTip();
+                                    StackPanel toolTipStackPanel = new StackPanel();
                                     Image toolTipImage = new Image();
-                                    toolTipImage.DataContext = Global.BASE_IMAGE_URL + reply.board + "/" + reply.tim + reply.ext;
+                                    TextBlock toolTipTextBlock = new TextBlock();
+
+                                    imageToolTip.Background = Brushes.Black;
                                     imageToolTip.Loaded += (ls, le) =>
                                     {
                                         toolTipImage.Source = new BitmapImage(new Uri((string)toolTipImage.DataContext));
+                                        toolTipImage.MaxHeight = SystemParameters.PrimaryScreenHeight;
+                                        toolTipImage.MaxWidth = SystemParameters.PrimaryScreenHeight;
                                     };
 
-                                    imageToolTip.Content = toolTipImage;
+                                    toolTipStackPanel.Orientation = Orientation.Vertical;
+                                    
+                                    toolTipTextBlock.Text = reply.filename + reply.ext;
+                                    toolTipStackPanel.Children.Add(toolTipTextBlock);
 
+                                    toolTipImage.DataContext = Global.BASE_IMAGE_URL + reply.board + "/" + reply.tim + reply.ext;
+                                    toolTipStackPanel.Children.Add(toolTipImage);
+
+
+                                    imageToolTip.Content = toolTipStackPanel;
+                                    ToolTipService.SetShowDuration(image, int.MaxValue);
+                                    //ToolTipService.SetInitialShowDelay(image, 0);
+                                    ToolTipService.SetPlacement(image, System.Windows.Controls.Primitives.PlacementMode.Left);
                                     ToolTipService.SetToolTip(image, imageToolTip);
                                 }
 
@@ -251,22 +267,7 @@ namespace ChanBrowser
 
                                 ThreadStackPanel.Children.Add(postStackPanel);
                             }
-
-
-
-                            //foreach (var item in BoardGrid.Children.OfType<StackPanel>()
-                            //        .Zip(op.replyList, (i, p) => new { ChanPanel = i, Post = p }))
-                            //{
-                            //    BitmapImage bitmapImage = new BitmapImage(new Uri(item.Post.imageUrl));
-                            //    item.ChanPanel.Children.OfType<Image>().First().Source = bitmapImage;
-                            //    item.ChanPanel.Children.OfType<Image>().First().MaxWidth = bitmapImage.Width;
-                            //    item.ChanPanel.Children.OfType<Image>().First().MaxHeight = bitmapImage.Height;
-                                
-                            //    Global.htmlToTextBlockText(item.ChanPanel.Children.OfType<TextBlock>().First(),
-                            //         "<strong>" + System.Net.WebUtility.HtmlDecode(item.Post.sub) + "</strong>");
-                            //    Global.htmlToTextBlockText(item.ChanPanel.Children.OfType<TextBlock>().Last(),
-                            //        System.Net.WebUtility.HtmlDecode(item.Post.com));
-                            //}
+                            
                             break;
                         case TaskStatus.Canceled:
                             MessageBox.Show("loadThread was canceled!", "CANCELED");
