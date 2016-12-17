@@ -124,7 +124,7 @@ namespace ChanBrowser
 
         private void ThreadPanel_MouseUp(object sender, RoutedEventArgs e)
         {
-            if ((ChanPost)((StackPanel)sender).DataContext != null)
+            if (((StackPanel)sender).DataContext != null)
             {
                 ChanPost chanPost = ((ChanPost)((StackPanel)sender).DataContext);
                 Button threadButton = new Button();
