@@ -177,34 +177,57 @@ namespace ChanBrowser
                                     StackPanel postStackPanel = new StackPanel();
                                     postStackPanel.Orientation = Orientation.Horizontal;
                                     postStackPanel.HorizontalAlignment = HorizontalAlignment.Left;
+                                    postStackPanel.Margin = new Thickness(2);
                                     postStackPanel.Background = Brushes.MidnightBlue;
                                     
                                     Image image = new Image();
                                     image.Source = new BitmapImage(new Uri(reply.imageUrl));
                                     image.Stretch = Stretch.None;
                                     image.VerticalAlignment = VerticalAlignment.Top;
+                                    image.Margin = new Thickness(2);
                                     postStackPanel.Children.Add(image);
 
                                     StackPanel textStackPanel = new StackPanel();
                                     textStackPanel.Orientation = Orientation.Vertical;
                                     textStackPanel.VerticalAlignment = VerticalAlignment.Top;
 
-                                    if (reply.sub != "")
                                     {
-                                        TextBlock postSubject = new TextBlock();
-                                        Global.htmlToTextBlockText(postSubject, reply.sub);
-                                        postSubject.Foreground = Brushes.White;
-                                        postSubject.TextWrapping = TextWrapping.Wrap;
-                                        textStackPanel.Children.Add(postSubject);
+                                        TextBlock textBlock = new TextBlock();
+                                        Global.htmlToTextBlockText(textBlock,
+                                            (reply.no != 0 ? reply.no + " - " : "") + 
+                                            (reply.name != "" ? reply.name : "Anonymous") + " @ " +
+                                            (reply.now != "" ? reply.now : "UNKNOWN TIME"));
+                                        textBlock.Foreground = Brushes.White;
+                                        textBlock.TextWrapping = TextWrapping.Wrap;
+                                        textBlock.Loaded += (ls, le) =>
+                                        {
+                                            textBlock.Width = ThreadStackPanel.ActualWidth - image.ActualWidth;
+                                        };
+                                        textStackPanel.Children.Add(textBlock);
                                     }
 
-                                    if (reply.com != "")
                                     {
-                                        TextBlock postComment = new TextBlock();
-                                        Global.htmlToTextBlockText(postComment, reply.com);
-                                        postComment.Foreground = Brushes.White;
-                                        postComment.TextWrapping = TextWrapping.Wrap;
-                                        textStackPanel.Children.Add(postComment);
+                                        TextBlock textBlock = new TextBlock();
+                                        Global.htmlToTextBlockText(textBlock, "<strong>" + reply.sub + "</strong>");
+                                        textBlock.Foreground = Brushes.White;
+                                        textBlock.TextWrapping = TextWrapping.Wrap;
+                                        textBlock.Loaded += (ls, le) =>
+                                        {
+                                            textBlock.Width = ThreadStackPanel.ActualWidth - image.ActualWidth;
+                                        };
+                                        textStackPanel.Children.Add(textBlock);
+                                    }
+
+                                    {
+                                        TextBlock textBlock = new TextBlock();
+                                        Global.htmlToTextBlockText(textBlock, reply.com);
+                                        textBlock.Foreground = Brushes.White;
+                                        textBlock.TextWrapping = TextWrapping.Wrap;
+                                        textBlock.Loaded += (ls, le) => 
+                                        {
+                                            textBlock.Width = ThreadStackPanel.ActualWidth - image.ActualWidth;
+                                        };
+                                        textStackPanel.Children.Add(textBlock);
                                     }
                                     
                                     postStackPanel.Children.Add(textStackPanel);
