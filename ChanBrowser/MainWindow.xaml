@@ -5,135 +5,133 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:ChanBrowser"
         mc:Ignorable="d"
-        Title="MainWindow" Height="260.291" Width="508.689">
+        Title="MainWindow" Height="498.291" Width="831.689">
     <Grid Background="Black" Name="MainGrid">
         <Grid.ColumnDefinitions>
             <ColumnDefinition Width="100"/>
-            <ColumnDefinition Width="*" Name="ThreadColumn"/>
-            <ColumnDefinition Width="*"/>
-            <ColumnDefinition Width="*"/>
-            <ColumnDefinition Width="*"/>
             <ColumnDefinition Width="*"/>
             <ColumnDefinition Width="*"/>
             <ColumnDefinition Width="100"/>
         </Grid.ColumnDefinitions>
-        <Grid.RowDefinitions>
-            <RowDefinition Height="*" Name="ThreadWidth"/>
-            <RowDefinition Height="*"/>
-            <RowDefinition Height="*"/>
-        </Grid.RowDefinitions>
-        <ScrollViewer Grid.Column="0" Grid.Row="0" Grid.RowSpan="3" VerticalScrollBarVisibility="Hidden">
+
+        <ScrollViewer Grid.Column="0" VerticalScrollBarVisibility="Hidden">
             <StackPanel Name="BoardList" Orientation="Vertical">
                 <Button Click="BoardButton_Click">
                     ~null~
                 </Button>
             </StackPanel>
         </ScrollViewer>
-        <Border BorderBrush="Green" BorderThickness="1" Grid.Column="1" Grid.RowSpan="3"/>
-        <Border BorderBrush="Green" BorderThickness="1" Grid.Column="2" Grid.RowSpan="3"/>
-        <Border BorderBrush="Green" BorderThickness="1" Grid.Column="3" Grid.RowSpan="3"/>
-        <Border BorderBrush="Green" BorderThickness="1" Grid.Column="4" Grid.RowSpan="3"/>
-        <Border BorderBrush="Green" BorderThickness="1" Grid.Column="5" Grid.RowSpan="3"/>
-        <Border BorderBrush="Green" BorderThickness="1" Grid.Column="6" Grid.RowSpan="3"/>
 
-        <Border BorderBrush="Green" BorderThickness="1" Grid.Row="0" Grid.Column="1" Grid.ColumnSpan="6"/>
-        <Border BorderBrush="Green" BorderThickness="1" Grid.Row="1" Grid.Column="1" Grid.ColumnSpan="6"/>
-        <Border BorderBrush="Green" BorderThickness="1" Grid.Row="2" Grid.Column="1" Grid.ColumnSpan="5"/>
+        <Grid Background="Black" Name="BoardGrid" Grid.Column="1">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="*"/>
+                <ColumnDefinition Width="*"/>
+                <ColumnDefinition Width="*"/>
+                <ColumnDefinition Width="*"/>
+                <ColumnDefinition Width="*"/>
+            </Grid.ColumnDefinitions>
+            <Grid.RowDefinitions>
+                <RowDefinition Height="*" Name="ThreadWidth"/>
+                <RowDefinition Height="*"/>
+                <RowDefinition Height="*"/>
+            </Grid.RowDefinitions>
+            
+            <Border BorderBrush="Green" BorderThickness="1" Grid.Column="0" Grid.RowSpan="3"/>
+            <Border BorderBrush="Green" BorderThickness="1" Grid.Column="1" Grid.RowSpan="3"/>
+            <Border BorderBrush="Green" BorderThickness="1" Grid.Column="2" Grid.RowSpan="3"/>
+            <Border BorderBrush="Green" BorderThickness="1" Grid.Column="3" Grid.RowSpan="3"/>
+            <Border BorderBrush="Green" BorderThickness="1" Grid.Column="4" Grid.RowSpan="3"/>
 
-        <StackPanel Grid.Column="1" Grid.Row="0" Margin="1" MouseLeftButtonUp="ThreadPanel_MouseUp">
-            <Image/>
-            <TextBlock Foreground="White" TextWrapping="Wrap"/>
-            <TextBlock Foreground="White" TextWrapping="Wrap"/>
-        </StackPanel>
-        <StackPanel Grid.Column="2" Grid.Row="0" Margin="1" MouseLeftButtonUp="ThreadPanel_MouseUp">
-            <Image/>
-            <TextBlock Foreground="White" TextWrapping="Wrap"/>
-            <TextBlock Foreground="White" TextWrapping="Wrap"/>
-        </StackPanel>
-        <StackPanel Grid.Column="3" Grid.Row="0" Margin="1" MouseLeftButtonUp="ThreadPanel_MouseUp">
-            <Image/>
-            <TextBlock Foreground="White" TextWrapping="Wrap"/>
-            <TextBlock Foreground="White" TextWrapping="Wrap"/>
-        </StackPanel>
-        <StackPanel Grid.Column="4" Grid.Row="0" Margin="1" MouseLeftButtonUp="ThreadPanel_MouseUp">
-            <Image/>
-            <TextBlock Foreground="White" TextWrapping="Wrap"/>
-            <TextBlock Foreground="White" TextWrapping="Wrap"/>
-        </StackPanel>
-        <StackPanel Grid.Column="5" Grid.Row="0" Margin="1" MouseLeftButtonUp="ThreadPanel_MouseUp">
-            <Image/>
-            <TextBlock Foreground="White" TextWrapping="Wrap"/>
-            <TextBlock Foreground="White" TextWrapping="Wrap"/>
-        </StackPanel>
-        <StackPanel Grid.Column="6" Grid.Row="0" Margin="1" MouseLeftButtonUp="ThreadPanel_MouseUp">
-            <Image/>
-            <TextBlock Foreground="White" TextWrapping="Wrap"/>
-            <TextBlock Foreground="White" TextWrapping="Wrap"/>
-        </StackPanel>
+            <Border BorderBrush="Green" BorderThickness="1" Grid.Row="0" Grid.Column="0" Grid.ColumnSpan="6"/>
+            <Border BorderBrush="Green" BorderThickness="1" Grid.Row="1" Grid.Column="0" Grid.ColumnSpan="6"/>
+            <Border BorderBrush="Green" BorderThickness="1" Grid.Row="2" Grid.Column="0" Grid.ColumnSpan="5"/>
 
-        <StackPanel Grid.Column="1" Grid.Row="1" Margin="1" MouseLeftButtonUp="ThreadPanel_MouseUp">
-            <Image/>
-            <TextBlock Foreground="White" TextWrapping="Wrap"/>
-            <TextBlock Foreground="White" TextWrapping="Wrap"/>
-        </StackPanel>
-        <StackPanel Grid.Column="2" Grid.Row="1" Margin="1" MouseLeftButtonUp="ThreadPanel_MouseUp">
-            <Image/>
-            <TextBlock Foreground="White" TextWrapping="Wrap"/>
-            <TextBlock Foreground="White" TextWrapping="Wrap"/>
-        </StackPanel>
-        <StackPanel Grid.Column="3" Grid.Row="1" Margin="1" MouseLeftButtonUp="ThreadPanel_MouseUp">
-            <Image/>
-            <TextBlock Foreground="White" TextWrapping="Wrap"/>
-            <TextBlock Foreground="White" TextWrapping="Wrap"/>
-        </StackPanel>
-        <StackPanel Grid.Column="4" Grid.Row="1" Margin="1" MouseLeftButtonUp="ThreadPanel_MouseUp">
-            <Image/>
-            <TextBlock Foreground="White" TextWrapping="Wrap"/>
-            <TextBlock Foreground="White" TextWrapping="Wrap"/>
-        </StackPanel>
-        <StackPanel Grid.Column="5" Grid.Row="1" Margin="1" MouseLeftButtonUp="ThreadPanel_MouseUp">
-            <Image/>
-            <TextBlock Foreground="White" TextWrapping="Wrap"/>
-            <TextBlock Foreground="White" TextWrapping="Wrap"/>
-        </StackPanel>
-        <StackPanel Grid.Column="6" Grid.Row="1" Margin="1" MouseLeftButtonUp="ThreadPanel_MouseUp">
-            <Image/>
-            <TextBlock Foreground="White" TextWrapping="Wrap"/>
-            <TextBlock Foreground="White" TextWrapping="Wrap"/>
-        </StackPanel>
+            <StackPanel Grid.Column="0" Grid.Row="0" Margin="1" MouseLeftButtonUp="ThreadPanel_MouseUp">
+                <Image/>
+                <TextBlock Foreground="White" TextWrapping="Wrap"/>
+                <TextBlock Foreground="White" TextWrapping="Wrap"/>
+            </StackPanel>
+            <StackPanel Grid.Column="1" Grid.Row="0" Margin="1" MouseLeftButtonUp="ThreadPanel_MouseUp">
+                <Image/>
+                <TextBlock Foreground="White" TextWrapping="Wrap"/>
+                <TextBlock Foreground="White" TextWrapping="Wrap"/>
+            </StackPanel>
+            <StackPanel Grid.Column="2" Grid.Row="0" Margin="1" MouseLeftButtonUp="ThreadPanel_MouseUp">
+                <Image/>
+                <TextBlock Foreground="White" TextWrapping="Wrap"/>
+                <TextBlock Foreground="White" TextWrapping="Wrap"/>
+            </StackPanel>
+            <StackPanel Grid.Column="3" Grid.Row="0" Margin="1" MouseLeftButtonUp="ThreadPanel_MouseUp">
+                <Image/>
+                <TextBlock Foreground="White" TextWrapping="Wrap"/>
+                <TextBlock Foreground="White" TextWrapping="Wrap"/>
+            </StackPanel>
+            <StackPanel Grid.Column="4" Grid.Row="0" Margin="1" MouseLeftButtonUp="ThreadPanel_MouseUp">
+                <Image/>
+                <TextBlock Foreground="White" TextWrapping="Wrap"/>
+                <TextBlock Foreground="White" TextWrapping="Wrap"/>
+            </StackPanel>
 
-        <StackPanel Grid.Column="1" Grid.Row="2" Margin="1" MouseLeftButtonUp="ThreadPanel_MouseUp">
-            <Image/>
-            <TextBlock Foreground="White" TextWrapping="Wrap"/>
-            <TextBlock Foreground="White" TextWrapping="Wrap"/>
-        </StackPanel>
-        <StackPanel Grid.Column="2" Grid.Row="2" Margin="1" MouseLeftButtonUp="ThreadPanel_MouseUp">
-            <Image/>
-            <TextBlock Foreground="White" TextWrapping="Wrap"/>
-            <TextBlock Foreground="White" TextWrapping="Wrap"/>
-        </StackPanel>
-        <StackPanel Grid.Column="3" Grid.Row="2" Margin="1" MouseLeftButtonUp="ThreadPanel_MouseUp">
-            <Image/>
-            <TextBlock Foreground="White" TextWrapping="Wrap"/>
-            <TextBlock Foreground="White" TextWrapping="Wrap"/>
-        </StackPanel>
-        <StackPanel Grid.Column="4" Grid.Row="2" Margin="1" MouseLeftButtonUp="ThreadPanel_MouseUp">
-            <Image/>
-            <TextBlock Foreground="White" TextWrapping="Wrap"/>
-            <TextBlock Foreground="White" TextWrapping="Wrap"/>
-        </StackPanel>
-        <StackPanel Grid.Column="5" Grid.Row="2" Margin="1" MouseLeftButtonUp="ThreadPanel_MouseUp">
-            <Image/>
-            <TextBlock Foreground="White" TextWrapping="Wrap"/>
-            <TextBlock Foreground="White" TextWrapping="Wrap"/>
-        </StackPanel>
-        <StackPanel Grid.Column="6" Grid.Row="2" Margin="1" MouseLeftButtonUp="ThreadPanel_MouseUp">
-            <Image/>
-            <TextBlock Foreground="White" TextWrapping="Wrap"/>
-            <TextBlock Foreground="White" TextWrapping="Wrap"/>
-        </StackPanel>
+            <StackPanel Grid.Column="0" Grid.Row="1" Margin="1" MouseLeftButtonUp="ThreadPanel_MouseUp">
+                <Image/>
+                <TextBlock Foreground="White" TextWrapping="Wrap"/>
+                <TextBlock Foreground="White" TextWrapping="Wrap"/>
+            </StackPanel>
+            <StackPanel Grid.Column="1" Grid.Row="1" Margin="1" MouseLeftButtonUp="ThreadPanel_MouseUp">
+                <Image/>
+                <TextBlock Foreground="White" TextWrapping="Wrap"/>
+                <TextBlock Foreground="White" TextWrapping="Wrap"/>
+            </StackPanel>
+            <StackPanel Grid.Column="2" Grid.Row="1" Margin="1" MouseLeftButtonUp="ThreadPanel_MouseUp">
+                <Image/>
+                <TextBlock Foreground="White" TextWrapping="Wrap"/>
+                <TextBlock Foreground="White" TextWrapping="Wrap"/>
+            </StackPanel>
+            <StackPanel Grid.Column="3" Grid.Row="1" Margin="1" MouseLeftButtonUp="ThreadPanel_MouseUp">
+                <Image/>
+                <TextBlock Foreground="White" TextWrapping="Wrap"/>
+                <TextBlock Foreground="White" TextWrapping="Wrap"/>
+            </StackPanel>
+            <StackPanel Grid.Column="4" Grid.Row="1" Margin="1" MouseLeftButtonUp="ThreadPanel_MouseUp">
+                <Image/>
+                <TextBlock Foreground="White" TextWrapping="Wrap"/>
+                <TextBlock Foreground="White" TextWrapping="Wrap"/>
+            </StackPanel>
+
+            <StackPanel Grid.Column="0" Grid.Row="2" Margin="1" MouseLeftButtonUp="ThreadPanel_MouseUp">
+                <Image/>
+                <TextBlock Foreground="White" TextWrapping="Wrap"/>
+                <TextBlock Foreground="White" TextWrapping="Wrap"/>
+            </StackPanel>
+            <StackPanel Grid.Column="1" Grid.Row="2" Margin="1" MouseLeftButtonUp="ThreadPanel_MouseUp">
+                <Image/>
+                <TextBlock Foreground="White" TextWrapping="Wrap"/>
+                <TextBlock Foreground="White" TextWrapping="Wrap"/>
+            </StackPanel>
+            <StackPanel Grid.Column="2" Grid.Row="2" Margin="1" MouseLeftButtonUp="ThreadPanel_MouseUp">
+                <Image/>
+                <TextBlock Foreground="White" TextWrapping="Wrap"/>
+                <TextBlock Foreground="White" TextWrapping="Wrap"/>
+            </StackPanel>
+            <StackPanel Grid.Column="3" Grid.Row="2" Margin="1" MouseLeftButtonUp="ThreadPanel_MouseUp">
+                <Image/>
+                <TextBlock Foreground="White" TextWrapping="Wrap"/>
+                <TextBlock Foreground="White" TextWrapping="Wrap"/>
+            </StackPanel>
+            <StackPanel Grid.Column="4" Grid.Row="2" Margin="1" MouseLeftButtonUp="ThreadPanel_MouseUp">
+                <Image/>
+                <TextBlock Foreground="White" TextWrapping="Wrap"/>
+                <TextBlock Foreground="White" TextWrapping="Wrap"/>
+            </StackPanel>
+        </Grid>
+
+        <ScrollViewer Grid.Column="2">
+            <StackPanel Name="ThreadStackPanel" Orientation="Vertical">
+                
+            </StackPanel>
+        </ScrollViewer>
         
-        <ScrollViewer Grid.Column="7" Grid.Row="0" Grid.RowSpan="3" VerticalScrollBarVisibility="Hidden">
+        <ScrollViewer Grid.Column="3" VerticalScrollBarVisibility="Hidden">
             <StackPanel Name="ThreadList" Orientation="Vertical">
                 <Button Click="ThreadButton_Click">
                     ~null~
