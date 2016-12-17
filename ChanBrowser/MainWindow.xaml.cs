@@ -165,6 +165,7 @@ namespace ChanBrowser
             ChanPost op = ((ChanPost)((FrameworkElement)sender).DataContext);
 
             ThreadStackPanel.Children.Clear();
+            ((ScrollViewer)ThreadStackPanel.Parent).ScrollToTop();
 
             Task loadThread = Global.loadThread(op, tokenSource.Token);
             await loadThread.ContinueWith(t =>
