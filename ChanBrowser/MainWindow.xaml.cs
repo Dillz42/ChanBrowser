@@ -147,14 +147,33 @@ namespace ChanBrowser
             if (((StackPanel)sender).DataContext != null)
             {
                 ChanPost chanPost = ((ChanPost)((StackPanel)sender).DataContext);
+
+                StackPanel stackPanel = new StackPanel();
+                stackPanel.Orientation = Orientation.Vertical;
+                stackPanel.Margin = new Thickness(2);
+                stackPanel.Background = Brushes.DarkGreen;
+                
                 Button threadButton = new Button();
                 threadButton.MinWidth = 100;
-                threadButton.Margin = new Thickness(1);
+                threadButton.Margin = new Thickness(2);
                 threadButton.Content = chanPost.no.ToString() + "\n" + chanPost.semantic_url;
                 threadButton.DataContext = ((FrameworkElement)sender).DataContext;
                 threadButton.Click += ThreadButton_Click;
+                stackPanel.Children.Add(threadButton);
 
-                ThreadList.Children.Add(threadButton);
+                CheckBox checkBox = new CheckBox();
+                checkBox.Content = "Auto-Refresh";
+                checkBox.IsChecked = false;
+                checkBox.Margin = new Thickness(2);
+                stackPanel.Children.Add(checkBox);
+
+                Button removeThreadButton = new Button();
+                removeThreadButton.Content = "Remove";
+                removeThreadButton.Margin = new Thickness(2);
+                removeThreadButton.Click += (cs, ce) => { ThreadList.Children.Remove(stackPanel); };
+                stackPanel.Children.Add(removeThreadButton);
+
+                ThreadList.Children.Add(stackPanel);
 
                 ThreadButton_Click(threadButton, null);
             }
@@ -215,7 +234,8 @@ namespace ChanBrowser
                                     imageToolTip.Content = toolTipStackPanel;
                                     ToolTipService.SetShowDuration(image, int.MaxValue);
                                     //ToolTipService.SetInitialShowDelay(image, 0);
-                                    ToolTipService.SetPlacement(image, System.Windows.Controls.Primitives.PlacementMode.Left);
+                                    ToolTipService.SetPlacement(image, System.Windows.Controls.Primitives.PlacementMode.Absolute);
+
                                     ToolTipService.SetToolTip(image, imageToolTip);
                                 }
 
