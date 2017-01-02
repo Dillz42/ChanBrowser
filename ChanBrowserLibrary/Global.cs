@@ -16,9 +16,9 @@ namespace ChanBrowserLibrary
         public static List<ChanPost> chanThreadList = new List<ChanPost>();
         public static string currentBoard;
 
-        public async static Task<List<Tuple<string, string>>> getBoardList(CancellationToken cancellationToken = new CancellationToken())
+        public async static Task<List<Tuple<string, string, string>>> getBoardList(CancellationToken cancellationToken = new CancellationToken())
         {
-            List<Tuple<string, string>> retVal = new List<Tuple<string, string>>();
+            List<Tuple<string, string, string>> retVal = new List<Tuple<string, string, string>>();
 
             JArray boardList = 
                 (JArray)(
@@ -31,7 +31,8 @@ namespace ChanBrowserLibrary
             {
                 retVal.Add(Tuple.Create(
                     board["board"].ToString(), 
-                    board["title"].ToString() + "\n" + System.Net.WebUtility.HtmlDecode(board["meta_description"].ToString())));
+                    board["title"].ToString(),
+                    System.Net.WebUtility.HtmlDecode(board["meta_description"].ToString())));
             }
 
             return retVal;
