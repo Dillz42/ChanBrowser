@@ -54,7 +54,7 @@ namespace ChanBrowserLibrary
                 }
             }
 
-            chanThreadList.Sort((ChanPost a, ChanPost b) => { return b.last_modified - a.last_modified; });
+            chanThreadList.Sort((ChanPost a, ChanPost b) => { return (a.sticky == b.sticky) ? b.last_modified - a.last_modified : b.sticky - a.sticky; });
         }
 
         public async static Task loadThread(ChanPost op, CancellationToken cancellationToken = new CancellationToken())
