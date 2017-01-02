@@ -265,7 +265,7 @@ namespace ChanBrowser
                                     textBlock.TextWrapping = TextWrapping.Wrap;
                                     textBlock.Loaded += (ls, le) =>
                                     {
-                                        textBlock.Width = ThreadStackPanel.ActualWidth - image.ActualWidth;
+                                        textBlock.Width = ThreadStackPanel.ActualWidth - image.ActualWidth - SystemParameters.VerticalScrollBarWidth;
                                     };
                                     textStackPanel.Children.Add(textBlock);
                                 }
@@ -277,7 +277,7 @@ namespace ChanBrowser
                                     textBlock.TextWrapping = TextWrapping.Wrap;
                                     textBlock.Loaded += (ls, le) => 
                                     {
-                                        textBlock.Width = ThreadStackPanel.ActualWidth - image.ActualWidth;
+                                        textBlock.Width = ThreadStackPanel.ActualWidth - image.ActualWidth - SystemParameters.VerticalScrollBarWidth;
                                     };
                                     textStackPanel.Children.Add(textBlock);
                                 }
