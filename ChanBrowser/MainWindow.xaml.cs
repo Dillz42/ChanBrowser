@@ -76,6 +76,7 @@ namespace ChanBrowser
 
         private async void BoardButton_Click(object sender, RoutedEventArgs e)
         {
+            ((ScrollViewer)BoardStackPanel.Parent).ScrollToTop();
             if (((Button)sender).Content.ToString().Equals("~null~"))
             {
                 Title = "~~~DEV BUTTON~~~";
@@ -87,14 +88,7 @@ namespace ChanBrowser
             }
             else
             {
-                foreach (var item in BoardGrid.Children.OfType<StackPanel>())
-                {
-                    item.Children.OfType<Image>().First().Source = new BitmapImage(new Uri(Global.DEFAULT_IMAGE));
-                    item.Children.OfType<TextBlock>().First().Text = "";
-                    item.Children.OfType<TextBlock>().Last().Text = "";
-
-                    item.DataContext = null;
-                }
+                BoardStackPanel.Children.Clear();
 
                 Task task = Global.loadBoard(((Button)sender).Content.ToString(), tokenSource.Token);
                 await task.ContinueWith(t =>
@@ -104,31 +98,52 @@ namespace ChanBrowser
                          case TaskStatus.RanToCompletion:
                              Title = "/" + Global.currentBoard + "/";
 
-                             foreach (var item in BoardGrid.Children.OfType<StackPanel>()
-                                    .Zip(Global.chanThreadList,
-                                    (i, b) => new { ChanPanel = i, ChanThread = b }))
+                             foreach (ChanPost chanThread in Global.chanThreadList)
                              {
-                                 //item.ChanPanel.Children.OfType<Image>().First().MaxHeight =
-                                 //   (((Grid)item.ChanPanel.Parent).ActualHeight / ((Grid)item.ChanPanel.Parent).RowDefinitions.Count) * .8;
+                                 StackPanel threadStackPanel = new StackPanel();
+                                 threadStackPanel.Orientation = Orientation.Vertical;
+                                 threadStackPanel.Margin = new Thickness(3);
+                                 threadStackPanel.MouseUp += ThreadPanel_MouseUp;
 
-                                 BitmapImage bitmapImage = new BitmapImage(new Uri(item.ChanThread.imageUrl));
-                                 item.ChanPanel.Children.OfType<Image>().First().Source = bitmapImage;
+                                 //Add meta-data and subject
+                                 TextBlock subjectTextBlock = new TextBlock();
+                                 subjectTextBlock.Foreground = Brushes.White;
+                                 subjectTextBlock.TextWrapping = TextWrapping.Wrap;
+                                 Global.htmlToTextBlockText(subjectTextBlock,
+                                     "R:" + chanThread.replies + "/I:" + chanThread.images + 
+                                     (chanThread.sub =="" ? "" : " - " + "<strong>" + System.Net.WebUtility.HtmlDecode(chanThread.sub) + "</strong>"));
+                                threadStackPanel.Children.Add(subjectTextBlock);
 
+                                 StackPanel imageCommentStackPanel = new StackPanel();
+                                 imageCommentStackPanel.Orientation = Orientation.Horizontal;
+                                 //Add image
+                                 Image postImage = new Image();
+                                 
+                                 postImage.VerticalAlignment = VerticalAlignment.Top;
+                                 BitmapImage bitmapImage = new BitmapImage(new Uri(chanThread.imageUrl));
                                  bitmapImage.DownloadCompleted += (ds, de) =>
                                  {
-                                     item.ChanPanel.Children.OfType<Image>().First().MaxHeight = bitmapImage.PixelHeight;
-                                     item.ChanPanel.Children.OfType<Image>().First().MaxWidth = bitmapImage.PixelWidth;
+                                     postImage.MaxHeight = bitmapImage.PixelHeight;
+                                     postImage.MaxWidth = bitmapImage.PixelWidth;
                                  };
+                                 postImage.Source = bitmapImage;
+                                 imageCommentStackPanel.Children.Add(postImage);
 
-                                 item.ChanPanel.DataContext = item.ChanThread;
+                                 //Add comment
+                                 TextBlock commentTextBlock = new TextBlock();
+                                 commentTextBlock.Foreground = Brushes.White;
+                                 commentTextBlock.Margin = new Thickness(3);
+                                 commentTextBlock.TextWrapping = TextWrapping.Wrap;
+                                 Global.htmlToTextBlockText(commentTextBlock,
+                                     System.Net.WebUtility.HtmlDecode(chanThread.com)); ;
+                                 imageCommentStackPanel.Children.Add(commentTextBlock);
 
-                                 Global.htmlToTextBlockText(item.ChanPanel.Children.OfType<TextBlock>().First(),
-                                     "<strong>R:" + item.ChanThread.replies + "/I:" + item.ChanThread.images + "\n" +
-                                     System.Net.WebUtility.HtmlDecode(item.ChanThread.sub) + "</strong>");
-                                 Global.htmlToTextBlockText(item.ChanPanel.Children.OfType<TextBlock>().Last(),
-                                     System.Net.WebUtility.HtmlDecode(item.ChanThread.com));
+                                 threadStackPanel.Children.Add(imageCommentStackPanel);
 
-                                 
+                                 Separator separator = new Separator();
+                                 threadStackPanel.Children.Add(separator);
+
+                                 BoardStackPanel.Children.Add(threadStackPanel);
                              }
                              break;
                          case TaskStatus.Canceled:
@@ -144,7 +159,7 @@ namespace ChanBrowser
 
         private void ThreadPanel_MouseUp(object sender, RoutedEventArgs e)
         {
-            if (((StackPanel)sender).DataContext != null)
+            if (((FrameworkElement)sender).DataContext != null)
             {
                 ChanPost chanPost = ((ChanPost)((StackPanel)sender).DataContext);
 
