@@ -62,6 +62,7 @@ namespace ChanBrowser
 
                             ToolTip toolTip = new ToolTip();
                             toolTip.Content = board.Item2 + "\n" + board.Item3;
+                            toolTip.Placement = System.Windows.Controls.Primitives.PlacementMode.Right;
                             ToolTipService.SetToolTip(boardButton, toolTip);
                         }
                         break;
@@ -70,6 +71,7 @@ namespace ChanBrowser
                         break;
                     case TaskStatus.Faulted:
                         MessageBox.Show("getBoardList was faulted!", "EXCEPTION");
+                        System.Diagnostics.Debugger.Break();
                         break;
                 }
             }, TaskScheduler.FromCurrentSynchronizationContext());
@@ -177,6 +179,7 @@ namespace ChanBrowser
                              break;
                          case TaskStatus.Faulted:
                              MessageBox.Show("loadBoard was faulted!", "EXCEPTION");
+                             System.Diagnostics.Debugger.Break();
                              break;
                      }
                  }, TaskScheduler.FromCurrentSynchronizationContext());
@@ -216,11 +219,14 @@ namespace ChanBrowser
 
                 ThreadList.Children.Add(stackPanel);
 
-                ThreadButton_Click(threadButton, null);
+                ThreadButton_Click(sender, null, stackPanel);
             }
         }
-
-        private async void ThreadButton_Click(object sender, RoutedEventArgs e)
+        private void ThreadButton_Click(object sender, RoutedEventArgs e)
+        {
+            ThreadButton_Click(sender, e, null);
+        }
+        private async void ThreadButton_Click(object sender, RoutedEventArgs e, StackPanel threadSidebarStackPanel)
         {
             ChanPost op = ((ChanPost)((FrameworkElement)sender).DataContext);
 
@@ -274,8 +280,10 @@ namespace ChanBrowser
 
                                     imageToolTip.Content = toolTipStackPanel;
                                     ToolTipService.SetShowDuration(image, int.MaxValue);
-                                    //ToolTipService.SetInitialShowDelay(image, 0);
+                                    ToolTipService.SetInitialShowDelay(image, 0);
                                     ToolTipService.SetPlacement(image, System.Windows.Controls.Primitives.PlacementMode.Absolute);
+                                    imageToolTip.HorizontalOffset = 100;
+                                    imageToolTip.VerticalOffset = 200;
 
                                     ToolTipService.SetToolTip(image, imageToolTip);
                                 }
@@ -333,7 +341,30 @@ namespace ChanBrowser
                             MessageBox.Show("loadThread was canceled!", "CANCELED");
                             break;
                         case TaskStatus.Faulted:
-                            MessageBox.Show("loadThread was faulted!", "EXCEPTION");
+                            if (t.Exception.InnerException.Message == "404-NotFound")
+                            {
+                                if (sender.GetType() == typeof(Grid))
+                                {
+                                    ((Grid)sender).Background = Brushes.DarkRed;
+                                    ((Grid)sender).MouseLeftButtonUp -= ThreadPanel_MouseUp;
+                                    if (threadSidebarStackPanel != null)
+                                    {
+                                        ThreadList.Children.Remove(threadSidebarStackPanel);
+                                    }
+                                }
+                                else if (sender.GetType() == typeof(Button))
+                                {
+                                    ((StackPanel)((Button)sender).Parent).Background = Brushes.DarkRed;
+                                    ((StackPanel)((Button)sender).Parent).Children.OfType<CheckBox>().First().IsChecked = false;
+                                    ((StackPanel)((Button)sender).Parent).Children.OfType<CheckBox>().First().IsEnabled = false;
+                                }
+                                MessageBox.Show("Thread has 404'd!\n");
+                            }
+                            else
+                            {
+                                MessageBox.Show("loadThread was faulted!", "EXCEPTION");
+                                System.Diagnostics.Debugger.Break();
+                            }
                             break;
                         default:
                             break;

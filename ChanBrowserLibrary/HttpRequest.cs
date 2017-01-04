@@ -21,6 +21,10 @@ namespace ChanBrowserLibrary
                 {
                     return await response.Content.ReadAsStringAsync();
                 }
+                else if(response.StatusCode == System.Net.HttpStatusCode.NotFound)
+                {
+                    throw new Exception("404-NotFound");
+                }
                 return "";
             }
         }
