@@ -6,6 +6,32 @@
         xmlns:local="clr-namespace:ChanBrowser"
         mc:Ignorable="d"
         Title="MainWindow" Height="498.291" Width="831.689">
+
+    <Window.Resources>
+        <local:CommentWidthConverter x:Key="CommentWidthConverter"/>
+        <DataTemplate DataType="{x:Type local:ChanPost}">
+            <Grid MouseLeftButtonUp="ThreadPanel_MouseUp" Width="Auto" SizeChanged="Grid_SizeChanged">
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="Auto"/>
+                    <RowDefinition Height="Auto"/>
+                </Grid.RowDefinitions>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="Auto"/>
+                    <ColumnDefinition Width="*"/>
+                </Grid.ColumnDefinitions>
+                <TextBlock x:Name="postSub"  Margin="3" Grid.ColumnSpan="2" Background="Green">
+                    <Run Text="{Binding replies_images_string}"/>
+                    <Run Text="{Binding ElementName=postSub, Path=ActualWidth, Mode=OneWay}"/>
+                    <Run Text="{Binding ElementName=postImage, Path=ActualWidth, Mode=OneWay}"/>
+                    <Run Text="{Binding ElementName=postCom, Path=ActualWidth, Mode=OneWay}"/>
+                    <Run Text="{Binding sub}" FontWeight="Bold"/>
+                </TextBlock>
+                <Image x:Name="postImage" Source="{Binding imageSource}" Margin="3" Grid.Row="1"/>
+                <TextBlock x:Name="postCom" Text="{Binding com}" TextWrapping="Wrap" Margin="3" Background="Blue" Grid.Column="1" Grid.Row="1" DataContextChanged="TextBlock_DataContextChanged"/>
+            </Grid>
+        </DataTemplate>
+    </Window.Resources>
+    
     <Grid Background="Black" Name="MainGrid">
         <Grid.ColumnDefinitions>
             <ColumnDefinition Width="100"/>
@@ -22,11 +48,14 @@
             </StackPanel>
         </ScrollViewer>
 
-        <ScrollViewer Grid.Column="1">
+        <!--<ScrollViewer Grid.Column="1">
             <StackPanel Name="BoardStackPanel" Orientation="Vertical">
                 
             </StackPanel>
-        </ScrollViewer>
+        </ScrollViewer>-->
+        <ListBox Name="BoardListBox" ItemsSource="{Binding}" Grid.Column="1" 
+                 ScrollViewer.HorizontalScrollBarVisibility="Hidden" HorizontalContentAlignment="Stretch"
+                 PreviewMouseWheel="BoardListBox_PreviewMouseWheel"/>
 
         <ScrollViewer Grid.Column="2">
             <StackPanel Name="ThreadStackPanel" Orientation="Vertical">

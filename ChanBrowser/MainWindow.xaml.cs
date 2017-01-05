@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.ComponentModel;
 using System.Linq;
 using System.Text;
+using System.Threading;
 using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
@@ -13,7 +14,9 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
-using ChanBrowserLibrary;
+using Newtonsoft.Json.Linq;
+using System.Collections.ObjectModel;
+using System.Globalization;
 
 namespace ChanBrowser
 {
@@ -23,6 +26,7 @@ namespace ChanBrowser
     public partial class MainWindow : Window
     {
         System.Threading.CancellationTokenSource tokenSource = new System.Threading.CancellationTokenSource();
+        public static ObservableCollection<ChanPost> chanThreadList = new ObservableCollection<ChanPost>();
 
         public MainWindow()
         {
@@ -34,6 +38,7 @@ namespace ChanBrowser
                     MessageBox.Show("Dev console not avaliable!");
             };
             loadBoardList();
+            BoardListBox.DataContext = chanThreadList;
         }
 
         protected override void OnClosing(CancelEventArgs e)
@@ -77,113 +82,55 @@ namespace ChanBrowser
             }, TaskScheduler.FromCurrentSynchronizationContext());
         }
 
-        private async void BoardButton_Click(object sender, RoutedEventArgs e)
+        public async static Task loadBoard(string board, CancellationToken cancellationToken = new CancellationToken())
         {
-            ((ScrollViewer)BoardStackPanel.Parent).ScrollToTop();
-            if (((Button)sender).Content.ToString().Equals("~null~"))
+            chanThreadList.Clear();
+            Global.currentBoard = board;
+
+            string address = Global.BASE_URL + board + "/catalog.json";
+            JArray boardData = (JArray)await HttpRequest.httpRequestParse(address, JArray.Parse);
+
+            foreach (JObject boardPage in boardData)
             {
-                Title = "~~~DEV BUTTON~~~";
-                for (int i = 0; i < MainGrid.Children.OfType<Image>().Count(); i++)
+                foreach (JObject jsonThread in boardPage["threads"])
                 {
-                    Image image = MainGrid.Children.OfType<Image>().ToArray()[i];
-                    image.Source = new BitmapImage(new Uri("https://cdn.sstatic.net/Sites/stackoverflow/img/apple-touch-icon@2.png"));
+                    chanThreadList.Add(new ChanPost(jsonThread, board));
                 }
             }
-            else
+
+            //chanThreadList.Sort((ChanPost a, ChanPost b) => { return (a.sticky == b.sticky) ? b.last_modified - a.last_modified : b.sticky - a.sticky; });
+        }
+
+        private void BoardButton_Click(object sender, RoutedEventArgs e)
+        {
+            chanThreadList.Clear();
+
+            Tuple<string, string, string> boardInfo = ((Tuple<string, string, string>)((FrameworkElement)sender).DataContext);
+            Global.currentBoard = boardInfo.Item1;
+            Title = boardInfo.Item1 + " - " + boardInfo.Item2;
+            Task<object> task = HttpRequest.httpRequestParse(Global.BASE_URL + ((Button)sender).Content.ToString() + "/catalog.json", JArray.Parse);
+            task.ContinueWith( t =>
             {
-                BoardStackPanel.Children.Clear();
-
-                Task task = Global.loadBoard(((Button)sender).Content.ToString(), tokenSource.Token);
-                await task.ContinueWith(t =>
-                 {
-                     switch (t.Status)
-                     {
-                         case TaskStatus.RanToCompletion:
-                             Title = "/" + ((Tuple<string, string, string>)((Button)sender).DataContext).Item1 + "/ - " +
-                             ((Tuple<string, string, string>)((Button)sender).DataContext).Item2;
-
-                             foreach (ChanPost chanThread in Global.chanThreadList)
-                             {
-                                 Grid threadGrid = new Grid();
-                                 threadGrid.Margin = new Thickness(3);
-                                 threadGrid.DataContext = chanThread;
-                                 threadGrid.IsHitTestVisible = true;
-                                 threadGrid.MouseLeftButtonUp += ThreadPanel_MouseUp;
-
-                                 threadGrid.RowDefinitions.Add(new RowDefinition());
-                                 threadGrid.RowDefinitions.Add(new RowDefinition());
-                                 threadGrid.RowDefinitions.Add(new RowDefinition());
-                                 threadGrid.RowDefinitions.Add(new RowDefinition());
-
-                                 threadGrid.ColumnDefinitions.Add(new ColumnDefinition());
-                                 threadGrid.ColumnDefinitions.Add(new ColumnDefinition());
-
-                                 {
-                                     Separator separator = new Separator();
-                                     Grid.SetColumn(separator, 0);
-                                     Grid.SetRow(separator, 0);
-                                     Grid.SetColumnSpan(separator, 2);
-                                     threadGrid.Children.Add(separator);
-                                 }
-
-                                 //Add meta-data and subject
-                                 TextBlock subjectTextBlock = new TextBlock();
-                                 Grid.SetColumn(subjectTextBlock, 0);
-                                 Grid.SetRow(subjectTextBlock, 1);
-                                 Grid.SetColumnSpan(subjectTextBlock, 2);
-                                 subjectTextBlock.Foreground = Brushes.White;
-                                 subjectTextBlock.TextWrapping = TextWrapping.Wrap;
-                                 Global.htmlToTextBlockText(subjectTextBlock,
-                                     "R:" + chanThread.replies + "/I:" + chanThread.images +
-                                     (chanThread.sub == "" ? "" : " - " + "<strong>" + System.Net.WebUtility.HtmlDecode(chanThread.sub) + "</strong>"));
-                                 threadGrid.Children.Add(subjectTextBlock);
-
-                                 //Add image
-                                 Image postImage = new Image();
-                                 Grid.SetColumn(postImage, 0);
-                                 Grid.SetRow(postImage, 2);
-                                 postImage.VerticalAlignment = VerticalAlignment.Top;
-                                 BitmapImage bitmapImage = new BitmapImage(new Uri(chanThread.imageUrl));
-                                 bitmapImage.DownloadCompleted += (ds, de) =>
-                                 {
-                                     postImage.MaxHeight = bitmapImage.PixelHeight;
-                                     postImage.MaxWidth = bitmapImage.PixelWidth;
-                                     threadGrid.ColumnDefinitions[0].MaxWidth = bitmapImage.PixelHeight;
-                                 };
-                                 postImage.Source = bitmapImage;
-                                 threadGrid.Children.Add(postImage);
-
-                                 //Add comment
-                                 TextBlock commentTextBlock = new TextBlock();
-                                 Grid.SetColumn(commentTextBlock, 1);
-                                 Grid.SetRow(commentTextBlock, 2);
-                                 commentTextBlock.Foreground = Brushes.White;
-                                 commentTextBlock.Margin = new Thickness(3);
-                                 commentTextBlock.TextWrapping = TextWrapping.Wrap;
-                                 Global.htmlToTextBlockText(commentTextBlock, System.Net.WebUtility.HtmlDecode(chanThread.com));
-                                 threadGrid.Children.Add(commentTextBlock);
-
-                                 {
-                                     Separator separator = new Separator();
-                                     Grid.SetColumn(separator, 0);
-                                     Grid.SetRow(separator, 3);
-                                     Grid.SetColumnSpan(separator, 2);
-                                     threadGrid.Children.Add(separator);
-                                 }
-
-                                 BoardStackPanel.Children.Add(threadGrid);
-                             }
-                             break;
-                         case TaskStatus.Canceled:
-                             MessageBox.Show("loadBoard was canceled!", "CANCELED");
-                             break;
-                         case TaskStatus.Faulted:
-                             MessageBox.Show("loadBoard was faulted!", "EXCEPTION");
-                             System.Diagnostics.Debugger.Break();
-                             break;
-                     }
-                 }, TaskScheduler.FromCurrentSynchronizationContext());
-            }
+                switch (t.Status)
+                {
+                    case TaskStatus.RanToCompletion:
+                        foreach (var boardPage in (JArray)t.Result)
+                        {
+                            foreach (JObject jsonThread in boardPage["threads"])
+                            {
+                                chanThreadList.Add(new ChanPost(jsonThread, ((Button)sender).Content.ToString()));
+                            }
+                        }
+                        chanThreadList.OrderBy(chanPost => chanPost.last_modified);
+                        break;
+                    case TaskStatus.Canceled:
+                        break;
+                    case TaskStatus.Faulted:
+                        break;
+                    default:
+                        break;
+                }
+            }, TaskScheduler.FromCurrentSynchronizationContext());
         }
 
         private void ThreadPanel_MouseUp(object sender, RoutedEventArgs e)
@@ -371,6 +318,57 @@ namespace ChanBrowser
                     }
                 }, TaskScheduler.FromCurrentSynchronizationContext());
 
+        }
+
+        private void BoardListBox_PreviewMouseWheel(object sender, MouseWheelEventArgs e)
+        {
+            if (e.Delta < 0)
+            {
+                System.Windows.Controls.Primitives.ScrollBar.LineDownCommand.Execute(null, e.OriginalSource as IInputElement);
+            }
+            if (e.Delta > 0)
+            {
+                System.Windows.Controls.Primitives.ScrollBar.LineUpCommand.Execute(null, e.OriginalSource as IInputElement);
+            }
+            e.Handled = true;
+        }
+
+        private void TextBlock_DataContextChanged(object sender, DependencyPropertyChangedEventArgs e)
+        {
+            
+        }
+
+        private void Grid_DataContextChanged(object sender, DependencyPropertyChangedEventArgs e)
+        {
+            
+        }
+
+        private void Grid_SizeChanged(object sender, SizeChangedEventArgs e)
+        {
+            TextBlock textBlock = ((Grid)sender).Children.OfType<TextBlock>().Last();
+            
+            textBlock.Width = BoardListBox.ActualWidth -
+                ((ChanPost)textBlock.DataContext).tn_w -
+                ((
+                    ((Grid)sender).Margin.Left +
+                    ((Grid)sender).Margin.Right +
+                    ((Grid)sender).Children.OfType<Image>().First().Margin.Left +
+                    ((Grid)sender).Children.OfType<Image>().First().Margin.Right +
+                    textBlock.Margin.Left + textBlock.Margin.Right
+                ) * 3);
+        }
+    }
+
+    public class CommentWidthConverter : IValueConverter
+    {
+        object IValueConverter.Convert(object value, Type targetType, object parameter, CultureInfo culture)
+        {
+            return (double)value / 2;
+        }
+
+        object IValueConverter.ConvertBack(object value, Type targetType, object parameter, CultureInfo culture)
+        {
+            throw new NotImplementedException();
         }
     }
 }
